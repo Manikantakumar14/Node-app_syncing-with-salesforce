@@ -1,0 +1,298 @@
+<!-- <%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <% if (prods.length > 0) { %>
+            <div class="grid">
+                <% for (let product of prods) { %>
+                    <article class="card product-item">
+                        <header class="card__header">
+                            <h1 class="product__title"><%= product.title %></h1>
+                        </header>
+                        <div class="card__image">
+                            <img src="/<%= product.imageUrl %>"
+                                alt="<%= product.title %>">
+                        </div>
+                        <div class="card__content">
+                            <h2 class="product__price">$<%= product.price %></h2>
+                            <p class="product__description"><%= product.description %></p>
+                        </div>
+                        <div class="card__actions">
+                                <a href="/products/<%= product.id %>" class="btn">Details</a>
+                                <% if (isAuthenticated) { %>
+                            <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                            <% } %>
+                        </div>
+                    </article>
+                <% } %>
+            </div>
+            <section class="pagination">
+                    <% for (let i=1;i < totalPages+1; i++) { %>
+                        <a class="<%= currentpage === i ? 'active' : '' %>" href="?page=<%=i%>"><%= i %></a>
+                     
+                        <% } %>
+
+            </section>
+        <% } else { %>
+            <h1>No Products Found!</h1>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %> -->
+
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="shortcut icon" href="/images/" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/homepage.css">
+    <title>Plan USA</title>
+    <link rel="shortcut icon" href="/images/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Set height of body and the document to 100% */
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial;
+      }
+
+      /* Style tab links */
+      .tablink {
+        background-color: white;
+        color: #808080;
+        float: left;
+        border-left: 1px #f1f1f1;
+        border-top: none;
+        border-bottom: none;
+
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        font-size: 17px;
+        width: 25%;
+      }
+
+      .tablink:hover {
+        background-color: #f1f1f1;
+      }
+
+      /* Style the tab content (and add height:100% for full page content) */
+      .tabcontent {
+        border: 1px;
+        color: black;
+        display: none;
+        padding: 100px 20px;
+        height: 100%;
+      }
+
+      #Home {
+        background-color: #e2ebf0;
+      }
+      #News {
+        background-color: #ebedee;
+      }
+      #Contact {
+        background-color: #c3cfe2;
+      }
+      #About {
+        background-color: #f5efef;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="tablink" onclick="openPage('Home', this, '#e2ebf0')"
+    id="defaultOpen">
+      Donor
+    </button>
+    <button
+      class="tablink"
+      onclick="openPage('News', this, '#ebedee')"
+     
+    >
+      Donation
+    </button>
+    <button class="tablink" onclick="openPage('Contact', this, '#c3cfe2')">
+      Payment
+    </button>
+    <button class="tablink" onclick="openPage('About', this, '#f5efef')">
+      Legal
+    </button>
+
+    <div id="Home" class="tabcontent">
+      <h3>General Information</h3>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputFirstName">First name</label>
+          <input
+            type="text"
+            name="billing.name.first"
+            class="form-control"
+            id="inputFirstName"
+            placeholder="First Name"
+          />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputLastName">Last Name</label>
+          <input
+            type="text"
+            name="billing.name.last"
+            class="form-control"
+            id="inputLastName"
+            placeholder="Last Name"
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputEmail4">Email</label>
+          <input
+            type="email"
+            name="donor.email"
+            class="form-control"
+            id="inputEmail4"
+            placeholder="Email"
+          />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputDOB">Date of Birth</label>
+          <input
+            type="date"
+            class="form-control"
+            id="inputDOB"
+            placeholder="Date of Birth"
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputAddress">Address</label>
+        <input
+          type="text"
+          name="billing.address.street1"
+          class="form-control"
+          id="inputAddress"
+          placeholder="1234 Main St"
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputAddress2">Address 2</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputAddress2"
+          placeholder="Apartment, studio, or floor"
+        />
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="inputCity">City</label>
+          <input
+            type="text"
+            name="billing.address.city"
+            class="form-control"
+            id="inputCity"
+          />
+        </div>
+        <div class="form-group col-md-3">
+          <label for="inputCountry">Country</label>
+          <input
+            type="text"
+            name="billing.address.country"
+            class="form-control"
+            id="inputCountry"
+          />
+        </div>
+        <div class="form-group col-md-3">
+          <label for="inputState">State</label>
+          <select
+            name="billing.address.state"
+            id="inputState"
+            class="form-control"
+          >
+            <option selected>Choose...</option>
+            <option>...</option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="inputZip">Zip</label>
+          <input
+            type="text"
+            name="billing.address.zip"
+            class="form-control"
+            id="inputZip"
+          />
+        </div>
+      </div>
+     
+      <button class="tablink btn next" onclick="openclick('Contact')">Next</button>
+    </div>
+
+    <div id="News" class="tabcontent">
+      <h3>News</h3>
+      <p>Some news this fine day!</p>
+      <button class="tablink btn previous" onclick="openclick('Home')">Previous</button>
+      <button class="tablink btn next" onclick="openclick('Contact')">Next</button>
+    </div>
+
+    <div id="Contact" class="tabcontent">
+      <h3>Contact</h3>
+      <p>Get in touch, or swing by for a cup of coffee.</p>
+      
+      <button class="tablink btn next" onclick="openclick('Contact')">Pay</button>
+    </div>
+
+    <div id="About" class="tabcontent">
+      <h3>About</h3>
+      <p>Who we are and what we do.</p>
+      <button class="tablink btn btn-primary next" onclick="openclick('Contact')">Next</button>
+    </div>
+
+    <script>
+       function openclick(pageName) {
+        document.getElementById(pageName).click();
+      }
+      function openPage(pageName, elmnt, color) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].style.backgroundColor = "";
+        }
+        document.getElementById(pageName).style.display = "block";
+        if(elmnt){
+        document.getElementById("Home").style.backgroundColor = color;
+        }
+        elmnt.style.backgroundColor = color;
+      }
+
+     
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+    </script>
+  </body>
+</html>
